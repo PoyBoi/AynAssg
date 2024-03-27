@@ -27,3 +27,8 @@ This is the path to follow:
   - upscale the image from 512^2 to 2048^2
   - restore the faces if any
   - (Optional) Enhance the image using some method
+
+# Links
+
+1. YT [Link](https://www.youtube.com/watch?v=mZjrfN1SXXs) for the same
+2. Form [Link](https://docs.google.com/forms/d/e/1FAIpQLSddT4uqrG3XJ6UnI_FScmG5N9TFLUFY0Ud4tMfLr_g6HnmZQg/viewform?pli=1)
