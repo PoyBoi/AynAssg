@@ -1,0 +1,13 @@
+transformers==4.31.0
+accelerate==0.21.0
+diffusers==0.20.0
+huggingface_hub==0.16.4
+omegaconf==2.3.0
+torch
+torchvision
+torchaudio
+scikit_image
+numpy
+matplotlib
+argparse
+pillow
