@@ -1,7 +1,7 @@
 # The path I took:
 
-1. Setup the repo to work in it
-2. Turning the model into a diffuser model
+1. [x] Setup the repo to work in it
+2. [x] Turning the model into a diffuser model
  - Trying these models:
     - [ ] clarity_3
     - [ ] dreamshaper_8
