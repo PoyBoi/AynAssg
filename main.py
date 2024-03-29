@@ -12,6 +12,7 @@ parser.add_argument('-lora', type=str, help="Location of lora to be applied, if 
 parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt')
 parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default=-1)
 parser.add_argument('-cfg', type=int, help='How imaginate the AI is, from a scale of 1 to ', default=7)
+parser.add_argument('-clip-skip', type=int, help='Accounts for the CLIP skip setting', default=1)
 
 args = parser.parse_args()
 
@@ -38,6 +39,10 @@ output, error = process.communicate()
 print("-> Done \n")
 
 
+#__main__
+
+# Sample input line:
+# python main.py --c --l C:\TheGoodShit\StableDiffusion\stable-diffusion-webui\models\Stable-diffusion\beautifulRealistic_v60.safetensors
 
 if args.l !='':
     loc = args.l
@@ -49,3 +54,9 @@ if args.l !='':
         process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         output, error = process.communicate()
         print("Diffusor stored at \models\diffused\{}".format(file_name))
+    if args.g == True:
+        None
+    else:
+        print("No correct method selected, use '-h' to get list of available methods to use")
+else:
+    print("Location of model left empty, use '-h' to get list of available methods to use")
