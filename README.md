@@ -9,8 +9,8 @@ Experimentation pipeline for generating a 2048 x 2048 image from a text prompt d
 
 This is the path to follow:
 
-1. Deploy Stable Diffusion into python, use [this link](https://medium.com/@natsunoyuki/using-civitai-models-with-diffusers-package-45e0c475a67e)
-2. Convert civit.ai model required into diffuser model, using [this](https://github.com/huggingface/diffusers/blob/main/scripts/convert_original_stable_diffusion_to_diffusers.py), colab link pvt [here](https://colab.research.google.com/drive/1f8S3fCM9iDL7sk2Ny6gdvEiMs9-oO523#scrollTo=3NnPOMAqAABv)
+1. [✅] Deploy Stable Diffusion into python, use [this link](https://medium.com/@natsunoyuki/using-civitai-models-with-diffusers-package-45e0c475a67e)
+2. [✅] Convert civit.ai model required into diffuser model, using [this](https://github.com/huggingface/diffusers/blob/main/scripts/convert_original_stable_diffusion_to_diffusers.py), colab link pvt [here](https://colab.research.google.com/drive/1f8S3fCM9iDL7sk2Ny6gdvEiMs9-oO523#scrollTo=3NnPOMAqAABv)
   - for the same, try making a "mix" that can work with the problem statement given, using the "voldemort mix thing from 4chan", the "blends"
   - test the model, and see what iteration count works the best, read the description of each model correctly for the usage
 3. Now apply the rest of the things:
