@@ -44,8 +44,8 @@ if args.l !='':
     file_name = loc.split("\\")[-1].split(".")[0]
     if args.c == True:
         print("Converting {} to diffusor based model".format(file_name))
-        os.makedirs("models\diffused\{}".format(file_name), exist_ok=True)
-        command = "python models\convertModel.py  --checkpoint_path {} --dump_path \models\diffused\{}\ --from_safetensors".format(loc, file_name)
+        # os.makedirs("models\diffused\{}".format(file_name), exist_ok=True)
+        command = "python models\convertModel.py  --checkpoint_path {} --dump_path models\diffused\{} --from_safetensors".format(loc, file_name)
         process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         output, error = process.communicate()
         print("Diffusor stored at \models\diffused\{}".format(file_name))
