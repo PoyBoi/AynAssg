@@ -11,7 +11,7 @@ parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for th
 parser.add_argument('-lora', type=str, help="Location of lora to be applied, if any")
 parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt')
 parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default=-1)
-parser.add_argument('-cfg', type=int, help='How imaginate the AI is, from a scale of 1 to ', default=7)
+parser.add_argument('-cfg', type=int, help='How imaginative the AI is, from a scale of 1 to ', default=7)
 parser.add_argument('-clip-skip', type=int, help='Accounts for the CLIP skip setting', default=1)
 
 args = parser.parse_args()
