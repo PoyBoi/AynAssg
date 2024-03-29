@@ -2,6 +2,8 @@ import os
 import argparse
 import subprocess
 
+from scripts.pipeline_setup import (pipelineSetup)
+
 
 
 parser = argparse.ArgumentParser()
@@ -55,7 +57,8 @@ if args.l !='':
         output, error = process.communicate()
         print("Diffusor stored at \models\diffused\{}".format(file_name))
     if args.g == True:
-        None
+        
+
     else:
         print("No correct method selected, use '-h' to get list of available methods to use")
 else:
