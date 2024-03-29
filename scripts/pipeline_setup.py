@@ -59,6 +59,3 @@ def pipelineSetup(model_path:int, prompt:str, clip_skip:int = 1):
     pipe.scheduler = diffusers.EulerAncestralDiscreteScheduler.from_config(
         pipe.scheduler.config
 )
-    
-
-# TODO Need to get this location thing working, this is a pain in the butt
