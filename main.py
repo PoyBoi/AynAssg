@@ -49,6 +49,18 @@ print("-> Done \n")
 if args.l !='':
     loc = args.l
     file_name = loc.split("\\")[-1].split(".")[0]
+    
+    # Removes incorrect literals
+    noUse = ['-', '_', '.', '--', '..']
+    for i in file_name:
+        if i in noUse:
+            file_name_new = file_name.split(i)[0]
+            file_name = file_name_new
+            break
+
+    print("\n------> Look for the model inside: models\diffused\{}\n".format(file_name))
+
+    # Model conversion pipeline
     if args.c == True:
         print("Converting {} to diffusor based model".format(file_name))
         # os.makedirs("models\diffused\{}".format(file_name), exist_ok=True)
@@ -56,10 +68,12 @@ if args.l !='':
         process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         output, error = process.communicate()
         print("Diffusor stored at \models\diffused\{}".format(file_name))
+    
+    # Generation pipeline
     if args.g == True:
-        
+        pipelineSetup(model_path=args.l, clip_skip=1, prompt="A beautiful valley")
 
     else:
-        print("No correct method selected, use '-h' to get list of available methods to use")
+        print("[Generation/Conversion Error] No correct method selected, use '-h' to get list of available methods to use")
 else:
-    print("Location of model left empty, use '-h' to get list of available methods to use")
+    print("[Location Error] Location of model left empty, use '-h' to get list of available methods to use")
