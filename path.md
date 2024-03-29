@@ -2,6 +2,9 @@
 
 1. [x] Setup the repo to work in it
 2. [x] Turning the model into a diffuser model
+3. [x] Turned it into a pipeline
+4. [x] Loaded the diffusor model
+5. [x] Wrote argparser for CLI
  - Trying these models:
     - [ ] clarity_3
     - [ ] dreamshaper_8
