@@ -5,11 +5,11 @@ import subprocess
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-convert', '--c', '-C', help='Check for if you want to convert a .safetensor model into a diffusor model and store it', action="store_true")
+parser.add_argument('-convert', '--c', '-C', help='Check for if you want to convert a .safetensor model into a diffusor model and store it', action='store_true')
 parser.add_argument('-generate', '--g', '-G', help='Sets mode to generate', action='store_true')
-parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for the model')
-parser.add_argument('-lora', type=str, help="Location of lora to be applied, if any")
-parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt')
+parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for the model', default='')
+parser.add_argument('-lora', type=str, help="Location of lora to be applied, if any", default='')
+parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt', default='')
 parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default=-1)
 parser.add_argument('-cfg', type=int, help='How imaginative the AI is, from a scale of 1 to ', default=7)
 parser.add_argument('-clip-skip', type=int, help='Accounts for the CLIP skip setting', default=1)
