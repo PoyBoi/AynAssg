@@ -9,7 +9,9 @@
     - [ ] dreamshaper_8
     - [ ] [realisticVision_6](https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE)
 5. [x] Wrote argparser for CLI
-6. [ ] Lora
+6. [ ] Finish the path from the article
+7. [ ] Need to fix the argparse in main.py
+8. [ ] Lora
     > Try these:
     - negative embeddings lora's
-7. [ ] Make a model selector menu that reads models from the diffused folder
+9. [ ] Make a model selector menu that reads models from the diffused folder
