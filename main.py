@@ -4,17 +4,23 @@ import subprocess
 
 from scripts.pipeline_setup import (pipelineSetup)
 
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-convert', '--c', '-C', help='Check for if you want to convert a .safetensor model into a diffusor model and store it', action='store_true')
 parser.add_argument('-generate', '--g', '-G', help='Sets mode to generate', action='store_true')
+
 parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for the model', default='')
-parser.add_argument('-lora', type=str, help="Location of lora to be applied, if any", default='')
 parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt', default='')
+parser.add_argument('-neg-prompt', '--n', '-N', type=str, help='Stores the negative prompt', default='')
+
 parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default=-1)
 parser.add_argument('-cfg', type=int, help='How imaginative the AI is, from a scale of 1 to ', default=7)
 parser.add_argument('-clip-skip', type=int, help='Accounts for the CLIP skip setting', default=1)
+parser.add_argument('-steps', type=int, help='The amount of inference steps the models takes', default=20)
+parser.add_argument('-batch-size', type=int, help='Controls the number of images generated at once', default=1)
+
+parser.add_argument('-size', nargs='+', help='Input the size of the image in W H', default=[512, 512])
+
+parser.add_argument('-lora', type=str, help="Location of lora to be applied, if any", default='')
 
 args = parser.parse_args()
 
@@ -64,14 +70,33 @@ if args.l !='':
     if args.c == True:
         print("Converting {} to diffusor based model".format(file_name))
         # os.makedirs("models\diffused\{}".format(file_name), exist_ok=True)
-        command = "python models\convertModel.py  --checkpoint_path {} --dump_path models\diffused\{} --from_safetensors".format(loc, file_name)
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+
+        command = "python models\convertModel.py  --checkpoint_path {} --dump_path models\diffused\{} --from_safetensors".format(
+            loc, file_name
+        )
+
+        process = subprocess.Popen(
+            command, 
+            stdout=subprocess.PIPE, 
+            shell=True
+        )
+        
         output, error = process.communicate()
         print("Diffusor stored at \models\diffused\{}".format(file_name))
     
     # Generation pipeline
     if args.g == True:
-        pipelineSetup(model_path=args.l, clip_skip=1, prompt="A beautiful valley")
+        pipelineSetup(
+            model_path = args.l, 
+            prompt = args.p,
+            negative_prompt = args.n,
+            cfg = args.cfg,
+            clip_skip = args.clip_skip,
+            steps = args.steps,
+            seed = args.s, 
+            batch_size = args.batch_size,
+            size = args.size            
+            )
 
     else:
         print("[Generation/Conversion Error] No correct method selected, use '-h' to get list of available methods to use")
