@@ -13,16 +13,10 @@ import numpy as np
 
 from PIL import Image
 
-if torch.cuda.is_available():
-    device_name = torch.device("cuda")
-    torch_dtype = torch.float16
-else:
-    device_name = torch.device("cpu")
-    torch_dtype = torch.float32
-
 # This should be the name of the main function
 # def pipelineSetup(
 def pipeCreate(
+        torch_dtype,
         model_path:str,
         clip_skip:int = 1
 ):
@@ -57,13 +51,13 @@ def pipeCreate(
             # repo_type = 
         )
 
-    pipe = pipe.to(device_name)
+    # pipe = pipe.to(device_name)
 
     # Adding this code block to pipelineSetup(), keeping here for testing
     # # Change the pipe scheduler to EADS.
-    pipe.scheduler = diffusers.EulerAncestralDiscreteScheduler.from_config(
-        pipe.scheduler.config
-    )
+    # pipe.scheduler = diffusers.EulerAncestralDiscreteScheduler.from_config(
+    #     pipe.scheduler.config
+    # )
 
     return pipe
 
@@ -73,7 +67,7 @@ def getEmbeddings(
     negative_prompt:str,
     max_length:int = None,
     device=torch.device("cpu")
-)-> tuple:
+):
     if max_length is None:
         max_length = pipe.tokenizer.model_max_length
 
@@ -81,22 +75,86 @@ def getEmbeddings(
     # assert len(prompt) == len(negative_prompt), "Prompt lists must have equal length"
 
     # Prepare inputs with padding and truncation
-    inputs = pipe.tokenizer(
-        prompt + negative_prompt,
-        return_tensors="pt",
-        padding="max_length",
-        truncation=True,
-        max_length=max_length
-    ).to(device)
+    # inputs = pipe.tokenizer(
+    #     prompt + negative_prompt,
+    #     return_tensors="pt",
+    #     padding="max_length",
+    #     truncation=True,
+    #     max_length=max_length
+    # ).input_ids.to(device)
+        
+    if len(prompt.split(",")) >= len(negative_prompt.split(",")):
+        p_emb = pipe.tokenizer(
+            prompt, return_tensors = "pt", truncation = False
+        ).input_ids.to(device)
+        shape_max_length = p_emb.shape[-1]
+        n_emb = pipe.tokenizer(
+            negative_prompt,
+            truncation = False,
+            padding = "max_length",
+            max_length = shape_max_length,
+            return_tensors = "pt"
+        ).input_ids.to(device)
+
+    # If negative prompt is longer than prompt.
+    else:
+        n_emb = pipe.tokenizer(
+            negative_prompt, return_tensors = "pt", truncation = False
+        ).input_ids.to(device)
+        shape_max_length = n_emb.shape[-1]
+        p_emb = pipe.tokenizer(
+            prompt,
+            return_tensors = "pt",
+            truncation = False,
+            padding = "max_length",
+            max_length = shape_max_length
+        ).input_ids.to(device)
 
     # Separate prompt and negative prompt encodings
-    prompt_mask = torch.arange(len(prompt))[:, None].to(device)
-    negative_mask = torch.arange(len(negative_prompt))[:, None].to(device) + len(prompt)
+        
+    # Switch this code block
+    # Switch 1
+    # prompt_mask = torch.arange(len(prompt))[:, None].to(device)
+    # negative_mask = torch.arange(len(negative_prompt))[:, None].to(device) + len(prompt)
 
-    prompt_embeddings = pipe.text_encoder(inputs)[prompt_mask]
-    negative_embeddings = pipe.text_encoder(inputs)[negative_mask]
+    # print("prompt_mask:", prompt_mask)
+    # print("negative_mask:", negative_mask)
 
-    return prompt_embeddings, negative_embeddings
+    # prompt_embeddings = pipe.text_encoder(p_emb)[prompt_mask]
+    # negative_embeddings = pipe.text_encoder(n_emb)[negative_mask]
+
+    # print("prompt_embeddings:", prompt_embeddings)
+    # print("negative_embeddings:", negative_embeddings)
+
+    # return prompt_embeddings, negative_embeddings
+
+    # Switch 2
+    concat_embeds = []
+    neg_embeds = []
+    for i in range(0, shape_max_length, max_length):
+        concat_embeds.append(
+            pipe.text_encoder(p_emb[:, i: i + max_length])[0]
+        )
+        neg_embeds.append(
+            pipe.text_encoder(n_emb[:, i: i + max_length])[0]
+        )
+
+    return torch.cat(concat_embeds, dim = 1), torch.cat(neg_embeds, dim = 1)
+
+def plot_images(images, labels = None):
+    N = len(images)
+    n_cols = 5
+    n_rows = int(np.ceil(N / n_cols))
+
+    plt.figure(figsize = (20, 5 * n_rows))
+    for i in range(len(images)):
+        plt.subplot(n_rows, n_cols, i + 1)
+        if labels is not None:
+            plt.title(labels[i])
+        plt.imshow(np.array(images[i]))
+        plt.axis(False)
+    plt.show()
+
 
 #__main__
 # This is the master function for this file
@@ -119,13 +177,33 @@ def pipelineSetup(
     max_length:int = None,
     size:list = [512, 512],    
 ):
-    pipe = pipeCreate(model_path, clip_skip)
+    if torch.cuda.is_available():
+        device_name = torch.device("cuda")
+        device = torch.device("cuda")
+        torch_dtype = torch.float16
+    else:
+        device_name = torch.device("cpu")
+        device = torch.device("cpu")
+        torch_dtype = torch.float32
 
-    # pipe.scheduler = diffusers.EulerAncestralDiscreteScheduler.from_config(
-    # pipe.scheduler.config
-    # )
+    pipe = pipeCreate(
+        torch_dtype, 
+        model_path = model_path, 
+        clip_skip = clip_skip
+        )
 
-    p_emd, n_emb = getEmbeddings(pipe, prompt, negative_prompt, max_length, device)
+    pipe = pipe.to(device_name)
+    pipe.scheduler = diffusers.EulerAncestralDiscreteScheduler.from_config(
+        pipe.scheduler.config
+    )
+
+    p_emb, n_emb = getEmbeddings(
+        pipe, 
+        prompt, 
+        negative_prompt, 
+        max_length, 
+        device,
+        )
 
     # generation path code
 
@@ -152,7 +230,7 @@ def pipelineSetup(
             ).images
         else:
             new_img = pipe(
-                prompt_embeds = p_emd,
+                prompt_embeds = p_emb,
                 negative_prompt_embeds = n_emb,
                 width = size[0],
                 height = size[1],
@@ -165,12 +243,14 @@ def pipelineSetup(
 
         images += new_img
 
-        _, axs = plt.subplots(1, batch_size, figsize=(20, 20))
+        # _, axs = plt.subplots(1, batch_size, figsize=(20, 20))
 
-        # Plot each image in a subplot
-        for i, img in enumerate(images):
-            axs[i].imshow(img)
-            axs[i].set_title(f'Image {i+1}')
-            axs[i].axis('off')  # Hide axes
+        # # Plot each image in a subplot
+        # for i, img in enumerate(images):
+        #     axs[i].imshow(img)
+        #     axs[i].set_title(f'Image {i+1}')
+        #     axs[i].axis('off')  # Hide axes
 
-        plt.show()
+        # plt.show()
+
+        plot_images(images, "Image")
