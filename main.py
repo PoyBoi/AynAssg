@@ -86,6 +86,7 @@ if args.l !='':
     
     # Generation pipeline
     if args.g == True:
+        # print(args.size)
         pipelineSetup(
             model_path = args.l, 
             prompt = args.p,
