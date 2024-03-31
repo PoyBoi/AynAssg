@@ -21,6 +21,7 @@
 13. [x] Rehashing the code:
     - [x] Check if the pipeline setup inside a function is an issue, should not be an issue because the embdedding one works, will have to see about the global effect of using EADS in it or not
     - [x] Debug the masks and the emb's 117-122
+    - [ ] Remove the commented code, shift learnings to a ignored file
     - The changes that I made:
         - [x] Took lines 167-170 from inside pipeCreate
         - [x] added .input_ids
@@ -29,4 +30,5 @@
     - [ ] Show the prompt, the neg prompt, the seed, cfg scale
     - [ ] Load the above details into the pictures (check civit.ai)
 15. [ ] Show save location
-    - [ ] Make a saves folder logic, check for exist, otherwise no
+    - [ ] Make a save folder logic, checks for exist
+16. [ ] Try adding a progress loading bar
