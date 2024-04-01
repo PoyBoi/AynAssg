@@ -44,5 +44,5 @@
         - [] Add inpainting model option to argparse
             - [ ] Add BG prompt to the CLI as well
         - [ ] Make this a function that is called
-        - [ ]
+        - [ ] Have to push to main pipeline_setup file
     - [ ] Or I can gen the FG, cut it out using UNet, and then gen a BG
