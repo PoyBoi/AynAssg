@@ -31,5 +31,6 @@
     - [ ] Load the above details into the pictures (check civit.ai)
 15. [ ] Show save location
     - [ ] Make a save folder logic, checks for exist
+    - [ ] The name for the file saving
 16. [x] Try adding a progress loading bar
 17. [x] Check how to change the sampler
