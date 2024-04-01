@@ -24,7 +24,10 @@ parser.add_argument('-lora', type=str, help="Location of lora to be applied, if 
 
 args = parser.parse_args()
 
-
+if os.name == 'nt':  # Windows
+    os.system('cls')
+else:  # Unix-like systems (macOS, Linux)
+    os.system('clear')
 
 print("---> Fetching CWD")
 current_dir = os.path.dirname(os.path.realpath(__file__))
