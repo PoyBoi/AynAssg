@@ -34,3 +34,15 @@
     - [ ] The name for the file saving
 16. [x] Try adding a progress loading bar
 17. [x] Check how to change the sampler
+18. [ ] For the main task:
+    - [ ] Need to make one model that gen's the BG and the other that gen's the FG
+    - [x] Or I can use a singular model for this
+        - [x] Use DeepLabv3+ for the mask
+        - [x] Pass that to the BG generation model
+        - [x] Assign the mask image to a variable
+        - [ ] Dump memory to clear space in the end off the VRAM after gen is done
+        - [] Add inpainting model option to argparse
+            - [ ] Add BG prompt to the CLI as well
+        - [ ] Make this a function that is called
+        - [ ]
+    - [ ] Or I can gen the FG, cut it out using UNet, and then gen a BG
