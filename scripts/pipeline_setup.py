@@ -257,6 +257,11 @@ What the abbv's mean:
 
 
         images += new_img
-        labelsImg += "Prompts: {} | Negative Prompts: {} | CFG: {} | Size: {}"
+        labelsImg += "Prompts: {} | Negative Prompts: {} | CFG: {} | Size: {}".format(
+            prompt,
+            negative_prompt, 
+            cfg, 
+            size
+        )
 
-    plot_images(images, "Image")
+    plot_images(images, labelsImg)
