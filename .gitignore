@@ -168,4 +168,4 @@ test.py
 /models/lora/*
 test.ipynb
 /outputs/output_*
-/outputs/tmp_*
+/outputs/tmp/tmp_*
