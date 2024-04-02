@@ -2,11 +2,14 @@ import os
 import argparse
 import subprocess
 
-from scripts.pipeline_setup import (pipelineSetup)
+from scripts.pipeline_setup import (pipelineSetup, swapBG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-convert', '--c', '-C', help='Check for if you want to convert a .safetensor model into a diffusor model and store it', action='store_true')
 parser.add_argument('-generate', '--g', '-G', help='Sets mode to generate', action='store_true')
+parser.add_argument('-background', '--b', '-B', help='Generates the background for an image', action='store_true')
+
+parser.add_argument('-file', '--f', '-f', help='Pass the location for the image to be used for inpainting', default='')
 
 parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for the model', default='')
 parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt', default='')
@@ -101,6 +104,24 @@ if args.l !='':
             batch_size = args.batch_size,
             size = args.size            
             )
+    
+    if args.b == True:
+        print("IN !")
+        if os.path.isfile(args.f):
+            swapBG(
+                model_path = args.l, 
+                prompt_bg = args.p,
+                negative_prompt_bg = args.n,
+                filename = args.f,
+                cfg = args.cfg,
+                steps = args.steps,
+                seed = args.s,
+                # clip_skip = args.clip_skip,
+                # batch_size = args.batch_size,
+                # size = args.size  
+            )
+        else:
+            print("[Location Error] Path to/and/or Image do(es) not exist")
 
     else:
         print("[Generation/Conversion Error] No correct method selected, use '-h' to get list of available methods to use")
