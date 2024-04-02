@@ -16,9 +16,9 @@ This is the path to follow:
 3. Now apply the rest of the things:
     - Hypernetworks / ControlNet / Lora-Lycrosis / assign VAE (have to edit the pipeline for this) / CLIP skip
     - image upscaling / hi-res fix / assign height-width / face restoration
-    - sampling steps (check model for best usage) / sampling method / cfg scale (maybe) / batch count
-    - positive prompt / negative prompt / carried over prompt from what the model author tells / cfg / seed
-    - save location / show folder / show seed / save prompt with image
+    - [✅] sampling steps (check model for best usage) / sampling method / cfg scale (maybe) / batch count
+    - [✅] positive prompt / negative prompt / carried over prompt from what the model author tells / cfg / seed
+    - [✅] save location / show folder / show seed / save prompt with image
 4. Make it so that the image is generated in 512x512
     - make the model such that it has good realism, good geography, and good human relevance carry-over
     - copy the posture from the image
