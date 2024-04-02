@@ -167,3 +167,5 @@ test.py
 /models/diffused/*
 /models/lora/*
 test.ipynb
+/outputs/output_*
+/outputs/tmp_*
