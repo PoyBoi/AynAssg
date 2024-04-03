@@ -53,6 +53,30 @@ output, error = process.communicate()
 print("-> Done \n")
 
 
+print("---> Checking for GFPGAN installation")
+dir_path = "models/dependancy/GFPGAN/"
+if os.path.isdir(dir_path):
+    print("-> Already installed")
+    print("-> Checking for updates")
+    subprocess.run(["git", "-C", dir_path, "fetch"])
+
+    # Check the status of the local repository
+    status = subprocess.check_output(["git", "-C", dir_path, "status"])
+
+    # If the local repository is behind the remote repository, there are updates available
+    if "Your branch is behind" in status.decode("utf-8"):
+        print("-> Updates are available")
+        subprocess.run(["git", "-C", dir_path, "pull"])
+        print("-> Updates installed")
+    else:
+        print("-> No updates available")
+else:
+    print("-> Directory does not exist, cloning the repo...")
+    # Clone the repo
+    os.system("git clone https://github.com/TencentARC/GFPGAN.git " + dir_path)
+    print("-> repo installed")
+
+
 #__main__
 
 # Sample input line:
@@ -91,7 +115,7 @@ if args.l !='':
         print("Diffusor stored at \models\diffused\{}".format(file_name))
     
     # Generation pipeline
-    if args.g == True:
+    elif args.g == True:
         # print(args.size)
         pipelineSetup(
             model_path = args.l, 
@@ -105,7 +129,7 @@ if args.l !='':
             size = args.size            
             )
     
-    if args.b == True:
+    elif args.b == True:
         print("IN !")
         if os.path.isfile(args.f):
             swapBG(
