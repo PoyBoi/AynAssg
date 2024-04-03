@@ -15,3 +15,4 @@ pillow
 basicsr
 facexlib
 realesrgan
+gpfgan
