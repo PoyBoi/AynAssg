@@ -42,11 +42,12 @@
         - [x] Assign the mask image to a variable
             - [x] Save the mask, name is temp_mask inside output
         - [ ] Dump memory to clear space in the end off the VRAM after gen is done
-        - [ ] Add inpainting model option to argparse
-            - [ ] Add BG prompt to the CLI as well
-        - [ ] Make this a function that is called
-        - [ ] Have to push to main pipeline_setup file
+        - [x] Add inpainting model option to argparse
+            - [x] Add BG prompt to the CLI as well
+        - [x] Make this a function that is called
+        - [x] Have to push to main pipeline_setup file
     - [ ] Or I can gen the FG, cut it out using UNet, and then gen a BG
-19. [ ] Add a method that upscales the image
-20. [ ] Try to add controlNet inpainting
+19. [ ] Add a method that upscales the image, [realESRGAN](https://github.com/xinntao/Real-ESRGAN)
+20. [ ] Add a method that fixes the faces, [GFPGAN](https://github.com/TencentARC/GFPGAN) 
+21. [ ] Try to add controlNet inpainting
     - [ ] Can add controlNet Aux for posture detection
