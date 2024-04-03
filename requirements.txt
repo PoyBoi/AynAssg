@@ -11,3 +11,7 @@ numpy
 matplotlib
 argparse
 pillow
+
+basicsr
+facexlib
+realesrgan
