@@ -19,6 +19,11 @@ from torchvision import transforms
 from diffusers import AutoPipelineForInpainting
 from diffusers.utils import load_image, make_image_grid
 
+
+now = datetime.now()
+timestamp = now.strftime("%Y%m%d_%H%M%S")
+
+
 def pipeCreate(
         torch_dtype,
         model_path:str,
@@ -299,14 +304,14 @@ What the abbv's mean:
     # print(image_1, "\n", image_1[0])
     image_1[0].show()
 
-    # Get the current date and time
-    now = datetime.now()
+    # # Get the current date and time
+    # now = datetime.now()
 
-    # Format the date and time as a string
-    timestamp = now.strftime("%Y%m%d_%H%M%S")
+    # # Format the date and time as a string
+    # timestamp = now.strftime("%Y%m%d_%H%M%S")
 
     # Use the timestamp in the filename
-    filename = f"output_{timestamp}.png"
+    filename = f"output_bg_{timestamp}.png"
     image_1[0].save("./outputs/" + filename)
 
 #__main__
