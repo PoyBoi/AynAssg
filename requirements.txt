@@ -12,7 +12,9 @@ matplotlib
 argparse
 pillow
 
+accelerate
+
 basicsr
 facexlib
 realesrgan
-gpfgan
+# gpfgan
