@@ -49,5 +49,8 @@
     - [ ] Or I can gen the FG, cut it out using UNet, and then gen a BG
 19. [ ] Add a method that upscales the image, [realESRGAN](https://github.com/xinntao/Real-ESRGAN)
 20. [ ] Add a method that fixes the faces, [GFPGAN](https://github.com/TencentARC/GFPGAN) 
+    - [ ] Do the repo setup from the readme
+    - [ ] Do a demo run
 21. [ ] Try to add controlNet inpainting
     - [ ] Can add controlNet Aux for posture detection
+22. [ ] Add a method that saves the image generated with a pre-fix
