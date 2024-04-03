@@ -7,12 +7,12 @@
  - Trying these models:
     - [ ] clarity_3
     - [ ] dreamshaper_8
-    - [ ] [realisticVision_6](https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE)
+    - [x] [realisticVision_6](https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE)
 5.  [x] Wrote argparser for CLI
 6.  [x] Finish the path from the article
 7.  [x] Need to fix the argparse in main.py
 8.  [x] Need to add save location
-9.  [ ] Add real-ESRGAN
+9.  [x] Add real-ESRGAN
 10. [x] Error Handling
 11. [ ] Lora
     > Try these:
@@ -54,3 +54,6 @@
 21. [ ] Try to add controlNet inpainting
     - [ ] Can add controlNet Aux for posture detection
 22. [ ] Add a method that saves the image generated with a pre-fix
+23. [ ] Add upscale to the CLI
+    - fix this in each of the methods
+24. [ ] Fix the size issue
