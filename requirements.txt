@@ -14,7 +14,8 @@ pillow
 
 accelerate
 
-basicsr
+# basicsr
+new-basicsr
 facexlib
 realesrgan
 gfpgan
