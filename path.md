@@ -56,4 +56,6 @@
 22. [ ] Add a method that saves the image generated with a pre-fix
 23. [ ] Add upscale to the CLI
     - fix this in each of the methods
-24. [ ] Fix the size issue in the embeds
+    - [ ] Make a interactive UI, which shows size of image and then 
+24. [x] Fix the size issue in the embeds
+25. [x] Fix issue of single seed being used
