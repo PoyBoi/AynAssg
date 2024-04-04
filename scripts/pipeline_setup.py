@@ -69,7 +69,7 @@ def getEmbeddings(
         max_length = pipe.tokenizer.model_max_length
 
     # Ensure prompt and negative prompt have the same length        
-    if len(prompt.split(",")) != len(negative_prompt.split(",")):
+    if len(prompt.split(",")) >= len(negative_prompt.split(",")):
         p_emb = pipe.tokenizer(
             prompt, return_tensors = "pt", truncation = False
         ).input_ids.to(device)
@@ -77,7 +77,7 @@ def getEmbeddings(
         n_emb = pipe.tokenizer(
             negative_prompt,
             truncation = False,
-            padding = "max_length",
+            padding = 'max_length',
             max_length = shape_max_length,
             return_tensors = "pt"
         ).input_ids.to(device)
@@ -92,7 +92,7 @@ def getEmbeddings(
             prompt,
             return_tensors = "pt",
             truncation = False,
-            padding = "max_length",
+            padding = 'max_length',
             max_length = shape_max_length
         ).input_ids.to(device)
 
@@ -418,23 +418,27 @@ What the abbv's mean:
         pipe.scheduler.use_karras_sigmas = True
         pipe.algorithm_type = "sde-dpmsolver++"
 
-
     else:
         raise ValueError(f"Invalid diffusorOption: {diffusorOption}")
-
-    p_emb, n_emb = getEmbeddings(
-        pipe, 
-        prompt, 
-        negative_prompt, 
-        max_length, 
-        device,
-        )
 
     images, labelsImg = [], []
     # print(size)
 
     for count in range(batch_size):
-        # start_time = time.time()
+
+        # timestamp = int(timestamp) if not isinstance(timestamp, int) else timestamp
+        
+        now = datetime.now()
+        # print("time", now)
+        timestamp = now.strftime("%Y%m%d_%H%M%S")
+        # print("ts", timestamp)
+
+        if seed == -1:
+            seed = timestamp
+            old_ts = timestamp
+        if seed == old_ts:
+            seed = timestamp
+        
         if use_embeddings is False:
             new_img = pipe(
                 prompt = prompt,
@@ -447,6 +451,13 @@ What the abbv's mean:
                 generator = torch.manual_seed(seed),
             ).images
         else:
+            p_emb, n_emb = getEmbeddings(
+                        pipe, 
+                        prompt, 
+                        negative_prompt, 
+                        max_length, 
+                        device,
+                        )
             new_img = pipe(
                 prompt_embeds = p_emb,
                 negative_prompt_embeds = n_emb,
