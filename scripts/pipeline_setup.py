@@ -69,7 +69,7 @@ def getEmbeddings(
         max_length = pipe.tokenizer.model_max_length
 
     # Ensure prompt and negative prompt have the same length        
-    if len(prompt.split(",")) >= len(negative_prompt.split(",")):
+    if len(prompt.split(",")) != len(negative_prompt.split(",")):
         p_emb = pipe.tokenizer(
             prompt, return_tensors = "pt", truncation = False
         ).input_ids.to(device)
@@ -431,6 +431,7 @@ What the abbv's mean:
         )
 
     images, labelsImg = [], []
+    # print(size)
 
     for count in range(batch_size):
         # start_time = time.time()
@@ -438,8 +439,8 @@ What the abbv's mean:
             new_img = pipe(
                 prompt = prompt,
                 negative_prompt = negative_prompt,
-                width = size[0],
-                height = size[1],
+                width = int(size[0]),
+                height = int(size[1]),
                 guidance_scale = cfg,
                 num_inference_steps = steps,
                 num_images_per_prompt = 1,
@@ -449,8 +450,8 @@ What the abbv's mean:
             new_img = pipe(
                 prompt_embeds = p_emb,
                 negative_prompt_embeds = n_emb,
-                width = size[0],
-                height = size[1],
+                width = int(size[0]),
+                height = int(size[1]),
                 guidance_scale = cfg,
                 num_inference_steps = steps,
                 num_images_per_prompt = 1,
@@ -459,6 +460,7 @@ What the abbv's mean:
 
 
         images += new_img
+        # print(images)
         labelsImg += "Prompts: {} | Negative Prompts: {} | CFG: {} | Size: {}".format(
             prompt,
             negative_prompt, 
@@ -466,4 +468,9 @@ What the abbv's mean:
             size
         )
 
-    plot_images(images, labelsImg)
+    filename = f"output_gen_{timestamp}.png"
+    new_img[0].save("./outputs/" + filename)
+
+    # plot_images(images, labelsImg)
+    for i in images:
+        i.show()
