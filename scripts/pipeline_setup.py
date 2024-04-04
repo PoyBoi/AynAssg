@@ -147,8 +147,6 @@ def swapBG(
         device = torch.device("cpu")
         torch_dtype = torch.float32
 
-    # filename = r"C:\Users\parvs\OneDrive\Pictures\Cyberpunk 2077\photomode_19022024_021342.png"
-
     model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet50', pretrained=True)
     # model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet101', pretrained=True)
     model.eval()
@@ -175,7 +173,6 @@ def swapBG(
     colors = torch.as_tensor([i for i in range(21)])[:, None] * palette
     colors = (colors % 255).numpy().astype("uint8")
 
-    # plot the semantic segmentation predictions of 21 classes in each color
     r = Image.fromarray(output_predictions.byte().cpu().numpy()).resize(input_image.size)
     r.putpalette(colors)
 
@@ -185,7 +182,6 @@ def swapBG(
     plt.imshow(r)
     plt.show()
 
-    # image = cv2.imread(r"C:\Users\parvs\OneDrive\Pictures\Camera Roll\mask.png")
     image = cv2.imread(r"./outputs/tmp/tmp_mask_0.png")
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -422,16 +418,11 @@ What the abbv's mean:
         raise ValueError(f"Invalid diffusorOption: {diffusorOption}")
 
     images, labelsImg = [], []
-    # print(size)
 
     for count in range(batch_size):
 
-        # timestamp = int(timestamp) if not isinstance(timestamp, int) else timestamp
-        
         now = datetime.now()
-        # print("time", now)
         timestamp = now.strftime("%Y%m%d_%H%M%S")
-        # print("ts", timestamp)
 
         if seed == -1:
             seed = timestamp
@@ -472,7 +463,6 @@ What the abbv's mean:
 
 
         images += new_img
-        # print(images)
         labelsImg += "Prompts: {} | Negative Prompts: {} | CFG: {} | Size: {}".format(
             prompt,
             negative_prompt, 
@@ -483,6 +473,5 @@ What the abbv's mean:
     filename = f"output_gen_{timestamp}.png"
     new_img[0].save("./outputs/" + filename)
 
-    # plot_images(images, labelsImg)
     for i in images:
         i.show()
