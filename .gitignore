@@ -169,3 +169,8 @@ test.py
 test.ipynb
 /outputs/output_*
 /outputs/tmp/tmp_*
+*.png
+*.jpeg
+*.jpg
+/results
+/gfpgan
