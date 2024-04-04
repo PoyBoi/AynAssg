@@ -38,7 +38,6 @@ else:  # Unix-like systems (macOS, Linux)
 print("---> Fetching CWD")
 current_dir = os.path.dirname(os.path.realpath(__file__))
 current_dir = current_dir.split("\\")
-# current_dir = ["." if element == "AynAssg" else element for element in model_path]
 current_dir = "/".join(current_dir) + '/'
 print("->", current_dir, "\n")
 
@@ -66,10 +65,8 @@ if os.path.isdir(dir_path):
     print("-> Checking for updates")
     subprocess.run(["git", "-C", dir_path, "fetch"])
 
-    # Check the status of the local repository
     status = subprocess.check_output(["git", "-C", dir_path, "status"])
 
-    # If the local repository is behind the remote repository, there are updates available
     if "Your branch is behind" in status.decode("utf-8"):
         print("-> Updates are available")
         subprocess.run(["git", "-C", r"https://github.com/TencentARC/GFPGAN", "pull"])
@@ -78,9 +75,7 @@ if os.path.isdir(dir_path):
         print("-> No updates available")
 else:
     print("-> Directory does not exist, cloning the repo...")
-    # Clone the repo
     os.system("git clone https://github.com/TencentARC/GFPGAN.git " + dir_path)
-    # os.system("python ./models/dependancy/GFPGAN/setup.py develop")
     os.system("cd ./models/dependancy/GFPGAN && python setup.py develop")
     print("-> repo installed")
 
@@ -89,7 +84,6 @@ if os.path.isfile("./models/dependancy/GFPGAN/experiments/pretrained_models/GFPG
     print("-> Core model exists, proceeding...\n")
 else:
     print("-> Core model does not exist, downloading...\n")
-    # os.system("curl https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth -P ./models/dependancy/GFPGAN/experiments/pretrained_models")
     subprocess.run(["curl", "-LJ", "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth", "-o", r"C:/Users/parvs/VSC Codes/Python-root/AynAssg/models/dependancy/GFPGAN/experiments/pretrained_models/GFPGANv1.3.pth"])
     print("-> Model downloaded @ AynAssg/models/dependancy/GFPGAN/experiments/pretrained_models/ \n") 
 
@@ -105,7 +99,7 @@ basic_neg = "(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, s
 basic_neg_set = set(basic_neg.split(","))
 arg_neg_set= set(args.n.split(","))
 
-# Combine elements, handling potential empty strings
+# Combine elements, handling empty strings
 args.n = ",".join(basic_neg_set | arg_neg_set)
 
 if args.u != -1:
@@ -115,7 +109,7 @@ if args.l !='':
     loc = args.l
     file_name = loc.split("\\")[-1].split(".")[0]
     
-    # Removes incorrect literals
+    # Removing incorrect literals
     noUse = ['-', '_', '.', '--', '..']
     for i in file_name:
         if i in noUse:
@@ -128,8 +122,6 @@ if args.l !='':
     # Model conversion pipeline
     if args.c == True:
         print("Converting {} to diffusor based model".format(file_name))
-        # os.makedirs("models\diffused\{}".format(file_name), exist_ok=True)
-
         command = "python models\convertModel.py  --checkpoint_path {} --dump_path models\diffused\{} --from_safetensors".format(
             loc, file_name
         )
@@ -145,7 +137,6 @@ if args.l !='':
     
     # Generation pipeline
     elif args.g == True:
-        # print(args.size)
         if len(args.p.split(",")) != len(args.n.split(",")):
             valBool = True
         else:
@@ -164,9 +155,7 @@ if args.l !='':
             )
     
     elif args.u != -1:
-        # Change the location of the file inside -i
         print("-> Running Upscaling...\n")
-        # print(str(args.u))
         a = subprocess.run(["python", r"./models/dependancy/GFPGAN/inference_gfpgan.py", "-i", str(args.f), "-o" ,"results","-s" , str(args.u), "--bg_upsampler", "realesrgan"], capture_output=True, text=True)
         print("-> Upscaling done, printing output...\n")
         print(a.stderr)
@@ -174,7 +163,6 @@ if args.l !='':
 
         loc = args.f.split("\\")[-1]
         i = Image.open(r"./results/restored_imgs/{}".format(loc))
-        # Display the image
         i.show()
     
     elif args.b == True:
