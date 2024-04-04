@@ -2,13 +2,15 @@ import os
 import argparse
 import subprocess
 
+from PIL import Image
+
 from scripts.pipeline_setup import (pipelineSetup, swapBG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-convert', '--c', '-C', help='Check for if you want to convert a .safetensor model into a diffusor model and store it', action='store_true')
 parser.add_argument('-generate', '--g', '-G', help='Sets mode to generate', action='store_true')
 parser.add_argument('-background', '--b', '-B', help='Generates the background for an image', action='store_true')
-parser.add_argument('-upscale', '--u', '-U', type=int, help='Upscales the image by scale of <x>', default=0)
+parser.add_argument('-upscale', '--u', '-U', type=int, help='Upscales the image by scale of <x>', default = -1)
 
 parser.add_argument('-file', '--f', '-f', help='Pass the location for the image to be used for inpainting', default='')
 
@@ -35,6 +37,9 @@ else:  # Unix-like systems (macOS, Linux)
 
 print("---> Fetching CWD")
 current_dir = os.path.dirname(os.path.realpath(__file__))
+current_dir = current_dir.split("\\")
+# current_dir = ["." if element == "AynAssg" else element for element in model_path]
+current_dir = "/".join(current_dir) + '/'
 print("->", current_dir, "\n")
 
 
@@ -54,7 +59,7 @@ output, error = process.communicate()
 print("-> Done \n")
 
 
-print("---> Checking for GFPGAN installation")
+print("---> Checking for GFPGAN repo installation")
 dir_path = "models/dependancy/GFPGAN"
 if os.path.isdir(dir_path):
     print("-> Already installed")
@@ -75,8 +80,18 @@ else:
     print("-> Directory does not exist, cloning the repo...")
     # Clone the repo
     os.system("git clone https://github.com/TencentARC/GFPGAN.git " + dir_path)
-    os.system("python ./modelsetup.py develop")
+    # os.system("python ./models/dependancy/GFPGAN/setup.py develop")
+    os.system("cd ./models/dependancy/GFPGAN && python setup.py develop")
     print("-> repo installed")
+
+print("\n ---> Checking for GFPGAN's model installation")
+if os.path.isfile("./models/dependancy/GFPGAN/experiments/pretrained_models/GFPGANv1.3.pth"):
+    print("-> Core model exists, proceeding...\n")
+else:
+    print("-> Core model does not exist, downloading...\n")
+    # os.system("curl https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth -P ./models/dependancy/GFPGAN/experiments/pretrained_models")
+    subprocess.run(["curl", "-LJ", "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth", "-o", r"C:/Users/parvs/VSC Codes/Python-root/AynAssg/models/dependancy/GFPGAN/experiments/pretrained_models/GFPGANv1.3.pth"])
+    print("-> Model downloaded @ AynAssg/models/dependancy/GFPGAN/experiments/pretrained_models/ \n") 
 
 
 #__main__
@@ -93,6 +108,9 @@ arg_neg_set= set(args.n.split(","))
 # Combine elements, handling potential empty strings
 args.n = ",".join(basic_neg_set | arg_neg_set)
 
+if args.u != -1:
+    args.l = "placeholder"
+
 if args.l !='':
     loc = args.l
     file_name = loc.split("\\")[-1].split(".")[0]
@@ -105,7 +123,7 @@ if args.l !='':
             file_name = file_name_new
             break
 
-    print("\n------> Look for the model inside: models\diffused\{}\n".format(file_name))
+    print("------> Look for the model inside: models\diffused\{}\n".format(file_name))
 
     # Model conversion pipeline
     if args.c == True:
@@ -145,8 +163,21 @@ if args.l !='':
             use_embeddings = True         
             )
     
+    elif args.u != -1:
+        # Change the location of the file inside -i
+        print("-> Running Upscaling...\n")
+        # print(str(args.u))
+        a = subprocess.run(["python", r"./models/dependancy/GFPGAN/inference_gfpgan.py", "-i", str(args.f), "-o" ,"results","-s" , str(args.u), "--bg_upsampler", "realesrgan"], capture_output=True, text=True)
+        print("-> Upscaling done, printing output...\n")
+        print(a.stderr)
+        print(r"-> Look for output inside AynAssg/results/restored_imgs")
+
+        loc = args.f.split("\\")[-1]
+        i = Image.open(r"./results/restored_imgs/{}".format(loc))
+        # Display the image
+        i.show()
+    
     elif args.b == True:
-        print("IN !")
         if os.path.isfile(args.f):
             swapBG(
                 model_path = args.l, 
@@ -163,7 +194,6 @@ if args.l !='':
             )
         else:
             print("[Location Error] Path to/and/or Image do(es) not exist")
-
     else:
         print("[Generation/Conversion Error] No correct method selected, use '-h' to get list of available methods to use")
 else:
