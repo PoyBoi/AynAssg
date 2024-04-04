@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-convert', '--c', '-C', help='Check for if you want to convert a .safetensor model into a diffusor model and store it', action='store_true')
 parser.add_argument('-generate', '--g', '-G', help='Sets mode to generate', action='store_true')
 parser.add_argument('-background', '--b', '-B', help='Generates the background for an image', action='store_true')
+parser.add_argument('-upscale', '--u', '-U', type=int, help='Upscales the image by scale of <x>', default=0)
 
 parser.add_argument('-file', '--f', '-f', help='Pass the location for the image to be used for inpainting', default='')
 
@@ -15,7 +16,7 @@ parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for th
 parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt', default='')
 parser.add_argument('-neg-prompt', '--n', '-N', type=str, help='Stores the negative prompt', default='')
 
-parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default=-1)
+parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default = -1)
 parser.add_argument('-cfg', type=int, help='How imaginative the AI is, from a scale of 1 to ', default=7)
 parser.add_argument('-clip-skip', type=int, help='Accounts for the CLIP skip setting', default=1)
 parser.add_argument('-steps', type=int, help='The amount of inference steps the models takes', default=20)
@@ -54,7 +55,7 @@ print("-> Done \n")
 
 
 print("---> Checking for GFPGAN installation")
-dir_path = "models/dependancy/GFPGAN/"
+dir_path = "models/dependancy/GFPGAN"
 if os.path.isdir(dir_path):
     print("-> Already installed")
     print("-> Checking for updates")
@@ -66,7 +67,7 @@ if os.path.isdir(dir_path):
     # If the local repository is behind the remote repository, there are updates available
     if "Your branch is behind" in status.decode("utf-8"):
         print("-> Updates are available")
-        subprocess.run(["git", "-C", dir_path, "pull"])
+        subprocess.run(["git", "-C", r"https://github.com/TencentARC/GFPGAN", "pull"])
         print("-> Updates installed")
     else:
         print("-> No updates available")
@@ -74,6 +75,7 @@ else:
     print("-> Directory does not exist, cloning the repo...")
     # Clone the repo
     os.system("git clone https://github.com/TencentARC/GFPGAN.git " + dir_path)
+    os.system("python ./modelsetup.py develop")
     print("-> repo installed")
 
 
@@ -81,6 +83,15 @@ else:
 
 # Sample input line:
 # python main.py --c --l C:\TheGoodShit\StableDiffusion\stable-diffusion-webui\models\Stable-diffusion\beautifulRealistic_v60.safetensors
+
+# Checking for negative prompt efficiancy
+basic_neg = "(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime), text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck"
+
+basic_neg_set = set(basic_neg.split(","))
+arg_neg_set= set(args.n.split(","))
+
+# Combine elements, handling potential empty strings
+args.n = ",".join(basic_neg_set | arg_neg_set)
 
 if args.l !='':
     loc = args.l
@@ -117,6 +128,10 @@ if args.l !='':
     # Generation pipeline
     elif args.g == True:
         # print(args.size)
+        if len(args.p.split(",")) != len(args.n.split(",")):
+            valBool = True
+        else:
+            valBool = False
         pipelineSetup(
             model_path = args.l, 
             prompt = args.p,
@@ -126,7 +141,8 @@ if args.l !='':
             steps = args.steps,
             seed = args.s, 
             batch_size = args.batch_size,
-            size = args.size            
+            size = args.size,
+            use_embeddings = True         
             )
     
     elif args.b == True:
@@ -140,6 +156,7 @@ if args.l !='':
                 cfg = args.cfg,
                 steps = args.steps,
                 seed = args.s,
+                # scale = args.u
                 # clip_skip = args.clip_skip,
                 # batch_size = args.batch_size,
                 # size = args.size  
@@ -150,4 +167,4 @@ if args.l !='':
     else:
         print("[Generation/Conversion Error] No correct method selected, use '-h' to get list of available methods to use")
 else:
-    print("[Location Error] Location of model left empty, use '-h' to get list of available methods to use")
+    print("[Location Error] Location of model left empty, use --l to add location, use '-h' to get list of available methods to use")
