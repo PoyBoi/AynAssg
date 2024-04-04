@@ -17,4 +17,4 @@ accelerate
 basicsr
 facexlib
 realesrgan
-# gpfgan
+gfpgan
