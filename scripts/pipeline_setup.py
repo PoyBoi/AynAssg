@@ -438,6 +438,7 @@ What the abbv's mean:
             old_ts = timestamp
         if seed == old_ts:
             seed = timestamp
+            old_ts = timestamp
         
         if use_embeddings is False:
             new_img = pipe(
