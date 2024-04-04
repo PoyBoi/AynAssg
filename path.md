@@ -56,4 +56,4 @@
 22. [ ] Add a method that saves the image generated with a pre-fix
 23. [ ] Add upscale to the CLI
     - fix this in each of the methods
-24. [ ] Fix the size issue
+24. [ ] Fix the size issue in the embeds
