@@ -47,15 +47,15 @@
         - [x] Make this a function that is called
         - [x] Have to push to main pipeline_setup file
     - [ ] Or I can gen the FG, cut it out using UNet, and then gen a BG
-19. [ ] Add a method that upscales the image, [realESRGAN](https://github.com/xinntao/Real-ESRGAN)
+19. [x] Add a method that upscales the image, [realESRGAN](https://github.com/xinntao/Real-ESRGAN)
 20. [x] Add a method that fixes the faces, [GFPGAN](https://github.com/TencentARC/GFPGAN) 
     - [x] Do the repo setup from the readme
-    - [ ] Do a demo run
+    - [x] Do a demo run
+    - [x] Add the models from the readme if needed
 21. [ ] Try to add controlNet inpainting
     - [ ] Can add controlNet Aux for posture detection
-22. [ ] Add a method that saves the image generated with a pre-fix
-23. [ ] Add upscale to the CLI
-    - fix this in each of the methods
-    - [ ] Make a interactive UI, which shows size of image and then 
+22. [x] Add a method that saves the image generated with a pre-fix
+23. [x] Add upscale to the CLI
+    - [x] Make a interactive UI, which shows size of image and then 
 24. [x] Fix the size issue in the embeds
 25. [x] Fix issue of single seed being used
