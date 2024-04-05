@@ -1,9 +1,37 @@
-# Project Chimera
-### Ayna Assignment
+# <div align="center"><b>Project Chimera</b></div>
+
+## <div align="center"><b>Ayna Assignment</b></div>
 
 </hr>
 
+<div align="center">
 Experimentation pipeline for generating a 2048 x 2048 image from a text prompt describing a person and their background, emphasizing photorealism, steerability, and resource/time efficiency.
+</div>
+
+## :wrench: Dependencies and Installation
+
+- Python >= 3.7 
+- [PyTorch >= 1.7](https://pytorch.org/)
+- Option: NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads) 
+
+## Installation
+
+Following is the method to install this repo and get it up and working
+
+1. Clone this repo on your local machine/cloud machine, anywhere
+```
+clone https://github.com/PoyBoi/AynAssg.git
+cd AynAssg
+```
+2. Download your favourite models from your favourite repository collection, and place them in the `models/diffused` folder
+    - I use [Civit.AI](https://civitai.com/)'s models as they are community backed and tested
+
+## :rocket: Usage
+
+1. Run a dry-run, it will run through the code and install the dependencies required
+```
+python main.py --r
+```
 
 
 # Path to follow:
