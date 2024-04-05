@@ -111,6 +111,12 @@ This is the path to follow:
     - [✅] restore the faces if any
     - [✅] Enhance the image using some method
 
+# :warning: For the people
+To see the path followed, refer
+```
+AynAssg/path.md
+```
+
 # Links
 
 1. YT [Link](https://www.youtube.com/watch?v=mZjrfN1SXXs) for the same
