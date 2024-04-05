@@ -278,22 +278,29 @@ What the abbv's mean:
     mask_image = load_image(r'./outputs/tmp/tmp_mask.png')
 
     # 92 -> seed
-    generator = torch.Generator("cuda").manual_seed(seed)
+
+    now = datetime.now()
+    timestamp = now.strftime("%Y%m%d_%H%M%S")
+
+    if seed == -1:
+        seed = int(timestamp)
+
     # prompt = prompt_bg
     # negative_prompt = negative_prompt_bg
 
-    print(sum(init_image.size), sum(mask_image.size))
+    # print(sum(init_image.size), sum(mask_image.size))
 
     if init_image.size == mask_image.size:
-        print(sum(init_image.size), sum(mask_image.size))
+        # print(sum(init_image.size), sum(mask_image.size))
         # if (sum(init_image.size) + sum(mask_image.size)) > 1999:
         image_1 = pipeline(
             prompt=prompt_bg, 
             negative_prompt=negative_prompt_bg, 
-            image=init_image, mask_image=mask_image, generator=generator, 
+            image=init_image, mask_image=mask_image, 
+            generator = torch.Generator("cuda").manual_seed(seed),
             width = init_image.size[0], height = init_image.size[1],
             num_inference_steps= steps,
-            guidance_scale=cfg
+            guidance_scale=cfg, 
         ).images
     # make_image_grid([init_image, mask_image, image], rows=1, cols=3)
 
