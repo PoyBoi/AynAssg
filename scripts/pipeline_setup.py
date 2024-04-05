@@ -470,8 +470,8 @@ What the abbv's mean:
             size
         )
 
-    filename = f"output_gen_{timestamp}.png"
-    new_img[0].save("./outputs/" + filename)
+        filename = f"output_gen_{timestamp}.png"
+        new_img[0].save("./outputs/" + filename)
 
     for i in images:
         i.show()
