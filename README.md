@@ -52,7 +52,7 @@ Here is how to run these methods:
 python main.py --c --l <Location of model>
 ```
 #### Note:
-Model is stored in ```AynAssg\models\diffused``` within the folder of the same name as the original model
+> Model is stored in ```AynAssg\models\diffused``` within the folder of the same name as the original model
 
 
 ## 🖌️ Generation
@@ -60,7 +60,7 @@ Model is stored in ```AynAssg\models\diffused``` within the folder of the same n
 python main.py --g --l <Location of model> --p '<Prompt, separated by commas>' --n '<Negative Prompt>' -batch-size <int> -steps <int> -size <w h> -seed <int> -cfg <int> -clip-skip <int> 
 ```
 #### Note:
-Images are stored in ```AynAssg\outputs``` with prefix ```output_gen```
+> Images are stored in ```AynAssg\outputs``` with prefix ```output_gen```
 
 
 ## 🖼️ Background Change
@@ -68,7 +68,7 @@ Images are stored in ```AynAssg\outputs``` with prefix ```output_gen```
 python main.py --b --l <Location of model> --p '<Prompt>' --n '<Negative Prompt>' -f '<Location of image>' -steps <int> -seed <int> -cfg <int> -clip-skip <int>
 ```
 #### Note:
-Images are stored in ```AynAssg\outputs``` with prefix ```output_bg```
+> Images are stored in ```AynAssg\outputs``` with prefix ```output_bg```
 
 
 ## 📈 Upscale and 👨👩 Face Restoration
@@ -76,8 +76,8 @@ Images are stored in ```AynAssg\outputs``` with prefix ```output_bg```
 python main.py --u <Upscaling's Scale> -f '<Location of image>'
 ```
 #### Note:
-1. Restored images are stored in ```AynAssg\results\restored_imgs```
-2. Comparisions, cropped faces and restored faces are stores in their respective folders inside ```AynAssg\results```
+> 1. Restored images are stored in ```AynAssg\results\restored_imgs```
+> 2. Comparisions, cropped faces and restored faces are stores in their respective folders inside ```AynAssg\results```
 
 
 ## :bulb: Tips and Tricks
