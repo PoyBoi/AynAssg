@@ -47,7 +47,7 @@ cd AynAssg
 ```
 
 Here is how to run these methods:
-## Conversion 🖨️
+## 🤖 Conversion
 ```
 python main.py --c --l <Location of model>
 ```
@@ -55,7 +55,7 @@ python main.py --c --l <Location of model>
 Model is stored in ```AynAssg\models\diffused``` within the folder of the same name as the original model
 
 
-## Generation 🖌️
+## 🖌️ Generation
 ```
 python main.py --g --l <Location of model> --p '<Prompt, separated by commas>' --n '<Negative Prompt>' -batch-size <int> -steps <int> -size <w h> -seed <int> -cfg <int> -clip-skip <int> 
 ```
@@ -63,7 +63,7 @@ python main.py --g --l <Location of model> --p '<Prompt, separated by commas>' -
 Images are stored in ```AynAssg\outputs``` with prefix ```output_gen```
 
 
-## Background Change 🖼️
+## 🖼️ Background Change
 ```
 python main.py --b --l <Location of model> --p '<Prompt>' --n '<Negative Prompt>' -f '<Location of image>' -steps <int> -seed <int> -cfg <int> -clip-skip <int>
 ```
@@ -71,7 +71,7 @@ python main.py --b --l <Location of model> --p '<Prompt>' --n '<Negative Prompt>
 Images are stored in ```AynAssg\outputs``` with prefix ```output_bg```
 
 
-## Upscale 📈 and Face Restoration 👨👩
+## 📈 Upscale and 👨👩 Face Restoration
 ```
 python main.py --u <Upscaling's Scale> -f '<Location of image>'
 ```
@@ -87,6 +87,7 @@ python main.py --u <Upscaling's Scale> -f '<Location of image>'
 ```
 python main.py -h
 ```
+- Please have [cURL](https://curl.se/windows/) installed
 
 # Path followed:
 
