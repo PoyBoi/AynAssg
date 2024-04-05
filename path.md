@@ -59,3 +59,4 @@
     - [x] Make a interactive UI, which shows size of image and then 
 24. [x] Fix the size issue in the embeds
 25. [x] Fix issue of single seed being used
+26. [ ] Make the readme.md with examples, code hashes, etc
