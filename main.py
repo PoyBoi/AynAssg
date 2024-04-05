@@ -12,6 +12,8 @@ parser.add_argument('-generate', '--g', '-G', help='Sets mode to generate', acti
 parser.add_argument('-background', '--b', '-B', help='Generates the background for an image', action='store_true')
 parser.add_argument('-upscale', '--u', '-U', type=int, help='Upscales the image by scale of <x>', default = -1)
 
+parser.add_argument('-setup', '--r', '-R', help='Does a dry run through the code, installing dependancies.', action='store_true')
+
 parser.add_argument('-file', '--f', '-f', help='Pass the location for the image to be used for inpainting', default='')
 
 parser.add_argument('-loc', '--l', '-L', type=str, help='Set the location for the model', default='')
@@ -102,7 +104,7 @@ arg_neg_set= set(args.n.split(","))
 # Combine elements, handling empty strings
 args.n = ",".join(basic_neg_set | arg_neg_set)
 
-if args.u != -1:
+if args.u != -1 or args.r == True:
     args.l = "placeholder"
 
 if args.l !='':
@@ -153,7 +155,10 @@ if args.l !='':
             size = args.size,
             use_embeddings = True         
             )
-    
+        
+    elif args.r == True:
+        print("Dry run has been completed successfully, depenadancies have been installed")        
+
     elif args.u != -1:
         print("-> Running Upscaling...\n")
         a = subprocess.run(["python", r"./models/dependancy/GFPGAN/inference_gfpgan.py", "-i", str(args.f), "-o" ,"results","-s" , str(args.u), "--bg_upsampler", "realesrgan"], capture_output=True, text=True)
