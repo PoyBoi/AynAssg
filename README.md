@@ -8,13 +8,13 @@
 Experimentation pipeline for generating a 2048 x 2048 image from a text prompt describing a person and their background, emphasizing photorealism, steerability, and resource/time efficiency.
 </div>
 
-## :wrench: Dependencies and Installation
+# :wrench: Dependencies and Installation
 
 - Python >= 3.7 
 - [PyTorch >= 1.7](https://pytorch.org/)
 - Option: NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads) 
 
-## Installation
+# Installation
 
 Following is the method to install this repo and get it up and working
 
@@ -23,18 +23,72 @@ Following is the method to install this repo and get it up and working
 clone https://github.com/PoyBoi/AynAssg.git
 cd AynAssg
 ```
-2. Download your favourite models from your favourite repository collection, and place them in the `models/diffused` folder
-    - I use [Civit.AI](https://civitai.com/)'s models as they are community backed and tested
-
-## :rocket: Usage
-
-1. Run a dry-run, it will run through the code and install the dependencies required
+2. Run a dry-run, it will run through the code and install the dependencies required
 ```
 python main.py --r
 ```
 
+3. Download your favourite models from your favourite repository collection, and place them in the `AynAssg/models/diffused` folder
+    - I use [Civit.AI](https://civitai.com/)'s models as they are community backed and tested
 
-# Path to follow:
+# :rocket: Usage
+
+Following are the usable methods as of now (will update in future if needed):
+1. Convert ```.safetensor``` into a diffuser model to use with this repo
+2. Generate images using any converted model
+3. Change the background of an image with assisted inpainting and prompts
+4. Upscale the image using Real-ESRGAN
+5. Fix the faces in the image using GFPGAN
+
+#### Note:
+Please run this command to make sure you're inside the repo before running any of the commands
+```
+cd AynAssg
+```
+
+Here is how to run these methods:
+## Conversion 🖨️
+```
+python main.py --c --l <Location of model>
+```
+#### Note:
+Model is stored in ```AynAssg\models\diffused``` within the folder of the same name as the original model
+
+
+## Generation 🖌️
+```
+python main.py --g --l <Location of model> --p '<Prompt, separated by commas>' --n '<Negative Prompt>' -batch-size <int> -steps <int> -size <w h> -seed <int> -cfg <int> -clip-skip <int> 
+```
+#### Note:
+Images are stored in ```AynAssg\outputs``` with prefix ```output_gen```
+
+
+## Background Change 🖼️
+```
+python main.py --b --l <Location of model> --p '<Prompt>' --n '<Negative Prompt>' -f '<Location of image>' -steps <int> -seed <int> -cfg <int> -clip-skip <int>
+```
+#### Note:
+Images are stored in ```AynAssg\outputs``` with prefix ```output_bg```
+
+
+## Upscale 📈 and Face Restoration 👨👩
+```
+python main.py --u <Upscaling's Scale> -f '<Location of image>'
+```
+#### Note:
+1. Restored images are stored in ```AynAssg\results\restored_imgs```
+2. Comparisions, cropped faces and restored faces are stores in their respective folders inside ```AynAssg\results```
+
+
+## :bulb: Tips and Tricks
+- Alter the sampling steps as per the sampler that you want to use, a choice will be given in the Terminal
+    - When prompted, learn about the abbreviations if needed
+- Feeling stuck ? Run this to find out about the methods you can use
+```
+python main.py -h
+```
+
+# Path followed:
 
 This is the path to follow:
 
@@ -44,18 +98,18 @@ This is the path to follow:
     - test the model, and see what iteration count works the best, read the description of each model correctly for the usage
 3. Now apply the rest of the things:
     - Hypernetworks / ControlNet / Lora-Lycrosis / assign VAE (have to edit the pipeline for this) / CLIP skip
-    - image upscaling / hi-res fix / assign height-width / face restoration
+    - [✅] image upscaling / hi-res fix / assign height-width / face restoration
     - [✅] sampling steps (check model for best usage) / sampling method / cfg scale (maybe) / batch count
     - [✅] positive prompt / negative prompt / carried over prompt from what the model author tells / cfg / seed
     - [✅] save location / show folder / show seed / save prompt with image
-4. Make it so that the image is generated in 512x512
-    - make the model such that it has good realism, good geography, and good human relevance carry-over
+4. [✅] Make it so that the image is generated in 512x512
+    - [✅] make the model such that it has good realism, good geography, and good human relevance carry-over
     - copy the posture from the image
       - either use a lower CFG, or add a controlNet that extracts the pose from the image
-      - or just use inpainting via segmentation of Unet
-    - upscale the image from 512^2 to 2048^2
-    - restore the faces if any
-    - (Optional) Enhance the image using some method
+      - [✅] use inpainting via segmentation of Unet
+    - [✅] upscale the image from 512^2 to 2048^2
+    - [✅] restore the faces if any
+    - [✅] Enhance the image using some method
 
 # Links
 
