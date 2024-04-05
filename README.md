@@ -87,7 +87,33 @@ python main.py --u <Upscaling's Scale> -f '<Location of image>'
 ```
 python main.py -h
 ```
+- A handy copy of the console
+```
+options:
+  -h, --help                    show this help message and exit
+  -convert, --c, -C             Check for if you want to convert a .safetensor model into a diffusor model and store it
+  -generate, --g, -G            Sets mode to generate
+  -background, --b, -B          Generates the background for an image
+  -upscale U, --u U, -U U       Upscales the image by scale of <x>
+  -setup, --r, -R               Does a dry run through the code, installing dependancies.
+  -file F, --f F, -f F          Pass the location for the image to be used for inpainting
+  -loc L, --l L, -L L           Set the location for the model
+  -prompt P, --p P, -P P        Stores the prompt
+  -neg-prompt N, --n N, -N N    Stores the negative prompt
+  -seed S, --s S, -S S          Seed for generating the image
+  -cfg CFG                      How imaginative the AI is, from a scale of 1 to
+  -clip-skip CLIP_SKIP          Accounts for the CLIP skip setting
+  -steps STEPS                  The amount of inference steps the models takes
+  -batch-size BATCH_SIZE        Controls the number of images generated at once
+  -size SIZE [SIZE ...]         Input the size of the image in W H
+  -lora LORA                    Location of lora to be applied, if any
+  ```
 - Please have [cURL](https://curl.se/windows/) installed
+
+
+## 🔃 Flow
+
+
 
 # Path followed:
 
