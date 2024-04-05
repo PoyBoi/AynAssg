@@ -14,7 +14,7 @@ Experimentation pipeline for generating a 2048 x 2048 image from a text prompt d
 - [PyTorch >= 1.7](https://pytorch.org/)
 - Option: NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads) 
 
-# [🤗](huggingface.com) Installation
+# [🤗](https://huggingface.co/) Installation
 
 Following is the method to install this repo and get it up and working
 
