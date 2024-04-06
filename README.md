@@ -192,7 +192,31 @@ To see the path followed, refer
 AynAssg/path.md
 ```
 
-<!-- # Links
+# 📜 Licenses, Acknowledgements and References
 
-1. YT [Link](https://www.youtube.com/watch?v=mZjrfN1SXXs) for the same
-2. Form [Link](https://docs.google.com/forms/d/e/1FAIpQLSddT4uqrG3XJ6UnI_FScmG5N9TFLUFY0Ud4tMfLr_g6HnmZQg/viewform?pli=1) -->
+1. GFPGAN
+```
+@InProceedings{wang2021gfpgan,
+    author = {Xintao Wang and Yu Li and Honglun Zhang and Ying Shan},
+    title = {Towards Real-World Blind Face Restoration with Generative Facial Prior},
+    booktitle={The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year = {2021}
+}
+```
+2. Real-ESRGAN
+```@InProceedings{wang2021realesrgan,
+    author    = {Xintao Wang and Liangbin Xie and Chao Dong and Ying Shan},
+    title     = {Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data},
+    booktitle = {International Conference on Computer Vision Workshops (ICCVW)},
+    date      = {2021}
+}
+```
+3. Basic-SR
+```@InProceedings{basicsr,
+  author =       {Xintao Wang and Liangbin Xie and Ke Yu and Kelvin C.K. Chan and Chen Change Loy and Chao Dong},
+  title =        {{BasicSR}: Open Source Image and Video Restoration Toolbox},
+  howpublished = {\url{https://github.com/XPixelGroup/BasicSR}},
+  year =         {2022}
+}
+```
+4. FaceXLib
