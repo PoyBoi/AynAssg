@@ -60,6 +60,6 @@
 24. [x] Fix the size issue in the embeds
 25. [x] Fix issue of single seed being used
 26. [x] Make the readme.md with examples, code hashes, pictures
-    - [ ] Give credits to the projects used, and the citations needed 
+    - [x] Give credits to the projects used, and the citations needed 
     - [x] make the commands better visible
-    - [ ] Add link to install civit.ai Models, and the ones that I have used
+    - [x] Add link to install civit.ai Models, and the ones that I have used
