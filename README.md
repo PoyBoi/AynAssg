@@ -152,6 +152,14 @@ options:
   <br><br><br>
 </p>
 
+### Upscaled Image
+<p align="center">
+  <img src="https://raw.githubusercontent.com/PoyBoi/AynAssg/main/outputs/miscHosted/miscHosted_bg_3_up.png">
+  <br>
+  Upscaled from 512x512 to 2048x2048
+  <br>
+</p>
+
 
 
 
