@@ -49,7 +49,9 @@ cd AynAssg
 Here is how to run these methods:
 ## 🤖 Conversion
 ```
-python main.py --c --l <Location of model>
+python main.py \
+--c \
+--l <Location of model>
 ```
 #### Note:
 > Model is stored in ```AynAssg\models\diffused``` within the folder of the same name as the original model
@@ -57,7 +59,13 @@ python main.py --c --l <Location of model>
 
 ## 🖌️ Generation
 ```
-python main.py --g --l <Location of model> --p '<Prompt, separated by commas>' --n '<Negative Prompt>' -batch-size <int> -steps <int> -size <w h> -seed <int> -cfg <int> -clip-skip <int> 
+python main.py \
+--g \
+--l <Location of model> \
+--p '<Prompt, separated by commas>' \
+--n '<Negative Prompt>' \
+-batch-size <int> -steps <int> -size <w h> \
+-seed <int> -cfg <int> -clip-skip <int> 
 ```
 #### Note:
 > Images are stored in ```AynAssg\outputs``` with prefix ```output_gen```
@@ -65,7 +73,13 @@ python main.py --g --l <Location of model> --p '<Prompt, separated by commas>' -
 
 ## 🖼️ Background Change
 ```
-python main.py --b --l <Location of model> --p '<Prompt>' --n '<Negative Prompt>' -f '<Location of image>' -steps <int> -seed <int> -cfg <int> -clip-skip <int>
+python main.py \
+--b \
+--l <Location of model> \
+--p '<Prompt>' \
+--n '<Negative Prompt>' \
+-f '<Location of image>' \
+-steps <int> -seed <int> -cfg <int> -clip-skip <int>
 ```
 #### Note:
 > Images are stored in ```AynAssg\outputs``` with prefix ```output_bg```
@@ -73,7 +87,9 @@ python main.py --b --l <Location of model> --p '<Prompt>' --n '<Negative Prompt>
 
 ## 📈 Upscale and 👨👩 Face Restoration
 ```
-python main.py --u <Upscaling's Scale> -f '<Location of image>'
+python main.py \
+--u <Upscaling's Scale> \
+-f '<Location of image>'
 ```
 #### Note:
 > 1. Restored images are stored in ```AynAssg\results\restored_imgs```
@@ -112,6 +128,30 @@ options:
 
 
 ## 🔃 Flow
+
+### Generated Image
+<p align="center">
+  <img src="https://raw.githubusercontent.com/PoyBoi/AynAssg/main/outputs/miscHosted/miscHosted_gen.png">
+  <br>
+  Prompt: neon lights, female, cyberpunk, (wearing long coat, big collars), dark, cinematic, 8k uhd, realistic, looking at camera, portait
+</p>
+
+### Background Changed Image
+<p align="center">
+  <img src="https://raw.githubusercontent.com/PoyBoi/AynAssg/main/outputs/miscHosted/miscHosted_bg_1.png">
+  <br>
+  Prompt: (blurred, portait), neon, cyberpunk, background, realisitc, photshoot, alleyway, alley, japanese, 8k uhd
+  <br><br><br>
+  <img src="https://raw.githubusercontent.com/PoyBoi/AynAssg/main/outputs/miscHosted/miscHosted_bg_2.png">
+  <br>
+  Prompt: (blurred, portait), park, open air, trees, cyberpunk, sunset, beautiful,  background, realisitc, photshoot, 8k uhd
+  <br><br><br>
+  <img src="https://raw.githubusercontent.com/PoyBoi/AynAssg/main/outputs/miscHosted/miscHosted_bg_3.png">
+  <br>
+  Prompt: (blurred, portait), realisitc background of a beach shore on a sunset with waves and the ocean, photshoot, 8k uhd
+  <br><br><br>
+</p>
+
 
 
 
