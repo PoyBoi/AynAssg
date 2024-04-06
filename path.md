@@ -61,3 +61,4 @@
 25. [x] Fix issue of single seed being used
 26. [ ] Make the readme.md with examples, code hashes, pictures
     - Give credits to the projects used, and the citations needed 
+    - make the commands better visible
