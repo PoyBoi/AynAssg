@@ -21,14 +21,16 @@ parser.add_argument('-prompt', '--p', '-P', type=str, help='Stores the prompt', 
 parser.add_argument('-neg-prompt', '--n', '-N', type=str, help='Stores the negative prompt', default='')
 
 parser.add_argument('-seed', '--s', '-S', type=int, help='Seed for generating the image', default = -1)
-parser.add_argument('-cfg', type=int, help='How imaginative the AI is, from a scale of 1 to ', default=7)
+parser.add_argument('-cfg', type=float, help='How imaginative the AI is, from a scale of 1 to 15', default=7)
 parser.add_argument('-clip-skip', type=int, help='Accounts for the CLIP skip setting', default=1)
-parser.add_argument('-steps', type=int, help='The amount of inference steps the models takes', default=20)
+parser.add_argument('-steps', type=int, help='The amount of inference sampling steps the models takes', default=20)
 parser.add_argument('-batch-size', type=int, help='Controls the number of images generated at once', default=1)
 
 parser.add_argument('-size', nargs='+', help='Input the size of the image in W H', default=[512, 512])
 
 parser.add_argument('-lora', type=str, help="Location of lora to be applied, if any", default='')
+
+parser.add_argument('-maskloc', '--k', '-K', type=str, help="Location of mask to be applied, if any", default='')
 
 args = parser.parse_args()
 
@@ -180,9 +182,10 @@ if args.l !='':
                 cfg = args.cfg,
                 steps = args.steps,
                 seed = args.s,
+                cmask = args.k,
                 # scale = args.u
                 # clip_skip = args.clip_skip,
-                # batch_size = args.batch_size,
+                batch_size = args.batch_size,
                 # size = args.size  
             )
         else:
