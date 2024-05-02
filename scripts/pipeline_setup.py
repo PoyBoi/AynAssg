@@ -128,10 +128,13 @@ def swapBG(
         negative_prompt_bg:str,
 
         filename:str,
+        cmask:str,
         
         seed:int=-1,
         steps:int = 20,
-        cfg:int = 7
+        cfg:int = 7,
+
+        batch_size:int = 1
 ):
     
     model_path = model_path.split("\\")
@@ -147,49 +150,57 @@ def swapBG(
         device = torch.device("cpu")
         torch_dtype = torch.float32
 
-    model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet50', pretrained=True)
-    # model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet101', pretrained=True)
-    model.eval()
+    if cmask != "":
+        image = cv2.imread(cmask)
+    else:
+        # This is for making the BG mask
+        model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet50', pretrained=True)
+        # model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet101', pretrained=True)
+        model.eval()
 
-    input_image = Image.open(filename)
-    input_image = input_image.convert("RGB")
-    preprocess = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
+        input_image = Image.open(filename)
+        input_image = input_image.convert("RGB")
+        preprocess = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
 
-    input_tensor = preprocess(input_image)
-    input_batch = input_tensor.unsqueeze(0)
+        input_tensor = preprocess(input_image)
+        input_batch = input_tensor.unsqueeze(0)
 
-    if torch.cuda.is_available():
-        input_batch = input_batch.to('cuda')
-        model.to('cuda')
+        if torch.cuda.is_available():
+            input_batch = input_batch.to('cuda')
+            model.to('cuda')
 
-    with torch.no_grad():
-        output = model(input_batch)['out'][0]
-    output_predictions = output.argmax(0)
+        with torch.no_grad():
+            output = model(input_batch)['out'][0]
+        output_predictions = output.argmax(0)
 
-    palette = torch.tensor([2 ** 25 - 1, 2 ** 15 - 1, 2 ** 21 - 1])
-    colors = torch.as_tensor([i for i in range(21)])[:, None] * palette
-    colors = (colors % 255).numpy().astype("uint8")
+        palette = torch.tensor([2 ** 25 - 1, 2 ** 15 - 1, 2 ** 21 - 1])
+        colors = torch.as_tensor([i for i in range(21)])[:, None] * palette
+        colors = (colors % 255).numpy().astype("uint8")
 
-    r = Image.fromarray(output_predictions.byte().cpu().numpy()).resize(input_image.size)
-    r.putpalette(colors)
+        r = Image.fromarray(output_predictions.byte().cpu().numpy()).resize(input_image.size)
+        r.putpalette(colors)
 
-    save_path = r"./outputs/tmp/tmp_mask_0.png"
-    r.save(save_path)
+        save_path = r"./outputs/tmp/tmp_mask_0.png"
+        r.save(save_path)
 
-    plt.imshow(r)
-    plt.show()
+        plt.imshow(r)
+        plt.show()
+        
+        image = cv2.imread(r"./outputs/tmp/tmp_mask_0.png")
 
-    image = cv2.imread(r"./outputs/tmp/tmp_mask_0.png")
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     threshold = 0
 
     # Convert to black and white using manual threshold with explicit black and white values
     black_white_image = cv2.threshold(gray_image, threshold, 255, cv2.THRESH_BINARY)[1]
-    inverted_image = cv2.bitwise_not(black_white_image)
+    if cmask != "":
+        inverted_image = black_white_image
+    else:
+        inverted_image = cv2.bitwise_not(black_white_image)
 
     cv2.imwrite(r'./outputs/tmp/tmp_mask.png', inverted_image)
 
@@ -278,44 +289,48 @@ What the abbv's mean:
     mask_image = load_image(r'./outputs/tmp/tmp_mask.png')
 
     # 92 -> seed
+    for i in range(batch_size):
+        now = datetime.now()
+        timestamp = now.strftime("%Y%m%d_%H%M%S")
 
-    now = datetime.now()
-    timestamp = now.strftime("%Y%m%d_%H%M%S")
+        if seed == -1:
+            seed = int(timestamp)
 
-    if seed == -1:
-        seed = int(timestamp)
+        # prompt = prompt_bg
+        # negative_prompt = negative_prompt_bg
 
-    # prompt = prompt_bg
-    # negative_prompt = negative_prompt_bg
-
-    # print(sum(init_image.size), sum(mask_image.size))
-
-    if init_image.size == mask_image.size:
         # print(sum(init_image.size), sum(mask_image.size))
-        # if (sum(init_image.size) + sum(mask_image.size)) > 1999:
-        image_1 = pipeline(
-            prompt=prompt_bg, 
-            negative_prompt=negative_prompt_bg, 
-            image=init_image, mask_image=mask_image, 
-            generator = torch.Generator("cuda").manual_seed(seed),
-            width = init_image.size[0], height = init_image.size[1],
-            num_inference_steps= steps,
-            guidance_scale=cfg, 
-        ).images
-    # make_image_grid([init_image, mask_image, image], rows=1, cols=3)
 
-    # print(image_1, "\n", image_1[0])
-    image_1[0].show()
+        if init_image.size == mask_image.size:
+            # print(sum(init_image.size), sum(mask_image.size))
+            # if (sum(init_image.size) + sum(mask_image.size)) > 1999:
+            image_1 = pipeline(
+                prompt=prompt_bg, 
+                negative_prompt=negative_prompt_bg, 
+                image=init_image, mask_image=mask_image, 
+                generator = torch.Generator("cuda").manual_seed(seed),
+                width = init_image.size[0], height = init_image.size[1],
+                num_inference_steps= steps,
+                guidance_scale=cfg, 
+            ).images
+        else:
+            raise RuntimeError("Image size != Mask Size, check your sizes before")
+            
+        # make_image_grid([init_image, mask_image, image], rows=1, cols=3)
 
-    # # Get the current date and time
-    # now = datetime.now()
+        # print(image_1, "\n", image_1[0])
+        image_1[0].show()
+        print("Seed: ", seed)
 
-    # # Format the date and time as a string
-    # timestamp = now.strftime("%Y%m%d_%H%M%S")
+        # # Get the current date and time
+        # now = datetime.now()
 
-    # Use the timestamp in the filename
-    filename = f"output_bg_{timestamp}.png"
-    image_1[0].save("./outputs/" + filename)
+        # # Format the date and time as a string
+        # timestamp = now.strftime("%Y%m%d_%H%M%S")
+
+        # Use the timestamp in the filename
+        filename = f"output_bg_{timestamp}.png"
+        image_1[0].save("./outputs/" + filename)
 
 #__main__
 def pipelineSetup(
