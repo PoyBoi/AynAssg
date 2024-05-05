@@ -129,6 +129,8 @@ def swapBG(
 
         filename:str,
         cmask:str,
+
+        method:int = 99,
         
         seed:int=-1,
         steps:int = 20,
@@ -224,43 +226,45 @@ def swapBG(
     10: diffusers.KDPM2DiscreteScheduler,
     }
 
-    diffusorOption = int(input(
-        """
+    if method == 99:
+        diffusorOption = int(input(
+            """
+                Which sampler do you want to use ?
+                1.  Euler               [Very simple and fast to compute but accrues error quickly unless a large number of steps (=small step size) is used.]
+                2.  Euler A             ["]
+                3.  LMS                 [A Linear Multi-Step method. An improvement over Euler's method that uses several prior steps, not just one, to predict the next sample.]
+                4.  Heun                [uses a correction step to reduce error and is thus an example of a predictor--corrector algorithm. Roughly twice as slow than Euler, not really worth using IME.]
+                5.  DPM++ 2M            [Variants of DPM++ that use second-order derivatives. Slower but more accurate. S means single-step, M means multi-step. DPM++ 2M (Karras) is probably one of the best samplers at the moment when it comes to speed and quality.]
+                6.  DPM++ 2M Karras     ["]
+                7.  DPM++ 2M SDE        ["]
+                8.  DPM++ 2M SDE Karras ["]
+                9.  DPM++ SDE           ["]
+                10. DPM2                [Diffusion Probabilistic Model solver. An algorithm specifically designed for solving diffusion differential equations, published by Cheng Lu et al.]
 
-Which sampler do you want to use ?
-1.  Euler               [Very simple and fast to compute but accrues error quickly unless a large number of steps (=small step size) is used.]
-2.  Euler A             ["]
-3.  LMS                 [A Linear Multi-Step method. An improvement over Euler's method that uses several prior steps, not just one, to predict the next sample.]
-4.  Heun                [uses a correction step to reduce error and is thus an example of a predictor--corrector algorithm. Roughly twice as slow than Euler, not really worth using IME.]
-5.  DPM++ 2M            [Variants of DPM++ that use second-order derivatives. Slower but more accurate. S means single-step, M means multi-step. DPM++ 2M (Karras) is probably one of the best samplers at the moment when it comes to speed and quality.]
-6.  DPM++ 2M Karras     ["]
-7.  DPM++ 2M SDE        ["]
-8.  DPM++ 2M SDE Karras ["]
-9.  DPM++ SDE           ["]
-10. DPM2                [Diffusion Probabilistic Model solver. An algorithm specifically designed for solving diffusion differential equations, published by Cheng Lu et al.]
+                0. Explanation of abbreviations
 
-0. Explanation of abbreviations
+                hint-0: Select the Sampling Steps based on the Sampler, it changes how the output generates
 
-hint-0: Select the Sampling Steps based on the Sampler, it changes how the output generates
+                Select your option:
+            """)
+        )
+    else:
+        diffusorOption = int(method)
 
-Select your option:
-"""
-    )
-)
     if diffusorOption == 0:
         print("""
-What the abbv's mean:
+                What the abbv's mean:
 
-? Any sampler with "Karras" in the name
-= A noise schedule is essentially a curve that determines how large each diffusion step is. Works well in large steps at first and small steps at the end.
+                ? Any sampler with "Karras" in the name
+                = A noise schedule is essentially a curve that determines how large each diffusion step is. Works well in large steps at first and small steps at the end.
 
-? Any sampler with "a" in the name
-= An "ancestral" variant of the solver. The results are also usually quite different from the non-ancestral counterpart, often regarded as more "creative".
+                ? Any sampler with "a" in the name
+                = An "ancestral" variant of the solver. The results are also usually quite different from the non-ancestral counterpart, often regarded as more "creative".
 
-? Any sampler with "SDE" in the name
-= Introduces some random "drift" to the process on each step to possibly find a route to a better solution than a fully deterministic solver. Doesn't necessarily converge on a single solution as the number of steps grow.
+                ? Any sampler with "SDE" in the name
+                = Introduces some random "drift" to the process on each step to possibly find a route to a better solution than a fully deterministic solver. Doesn't necessarily converge on a single solution as the number of steps grow.
 
-""")
+            """)
 
     elif diffusorOption in scheduler_classes:
         pipeline.scheduler = scheduler_classes[diffusorOption].from_config(pipeline.scheduler.config)
@@ -332,6 +336,9 @@ What the abbv's mean:
         filename = f"output_bg_{timestamp}.png"
         image_1[0].save("./outputs/" + filename)
 
+        # print(image_1[0])
+        return (image_1[0])
+
 #__main__
 def pipelineSetup(
     model_path:str,
@@ -345,6 +352,8 @@ def pipelineSetup(
     steps:int = 20,
     seed:int = -1,
     batch_size:int = 1,
+
+    method:int = 99,
 
     use_embeddings:bool = True,
     max_length:int = None,
@@ -382,29 +391,33 @@ def pipelineSetup(
     10: diffusers.KDPM2DiscreteScheduler,
     }
 
-    diffusorOption = int(input(
-        """
+    if method == 99:
+        diffusorOption = int(input(
+            """
 
-Which sampler do you want to use ?
-1.  Euler               [Very simple and fast to compute but accrues error quickly unless a large number of steps (=small step size) is used.]
-2.  Euler A             ["]
-3.  LMS                 [A Linear Multi-Step method. An improvement over Euler's method that uses several prior steps, not just one, to predict the next sample.]
-4.  Heun                [uses a correction step to reduce error and is thus an example of a predictor--corrector algorithm. Roughly twice as slow than Euler, not really worth using IME.]
-5.  DPM++ 2M            [Variants of DPM++ that use second-order derivatives. Slower but more accurate. S means single-step, M means multi-step. DPM++ 2M (Karras) is probably one of the best samplers at the moment when it comes to speed and quality.]
-6.  DPM++ 2M Karras     ["]
-7.  DPM++ 2M SDE        ["]
-8.  DPM++ 2M SDE Karras ["]
-9.  DPM++ SDE           ["]
-10. DPM2                [Diffusion Probabilistic Model solver. An algorithm specifically designed for solving diffusion differential equations, published by Cheng Lu et al.]
+    Which sampler do you want to use ?
+    1.  Euler               [Very simple and fast to compute but accrues error quickly unless a large number of steps (=small step size) is used.]
+    2.  Euler A             ["]
+    3.  LMS                 [A Linear Multi-Step method. An improvement over Euler's method that uses several prior steps, not just one, to predict the next sample.]
+    4.  Heun                [uses a correction step to reduce error and is thus an example of a predictor--corrector algorithm. Roughly twice as slow than Euler, not really worth using IME.]
+    5.  DPM++ 2M            [Variants of DPM++ that use second-order derivatives. Slower but more accurate. S means single-step, M means multi-step. DPM++ 2M (Karras) is probably one of the best samplers at the moment when it comes to speed and quality.]
+    6.  DPM++ 2M Karras     ["]
+    7.  DPM++ 2M SDE        ["]
+    8.  DPM++ 2M SDE Karras ["]
+    9.  DPM++ SDE           ["]
+    10. DPM2                [Diffusion Probabilistic Model solver. An algorithm specifically designed for solving diffusion differential equations, published by Cheng Lu et al.]
 
-0. Explanation of abbreviations
+    0. Explanation of abbreviations
 
-hint-0: Select the Sampling Steps based on the Sampler, it changes how the output generates
+    hint-0: Select the Sampling Steps based on the Sampler, it changes how the output generates
 
-Select your option:
-"""
+    Select your option:
+    """
+        )
     )
-)
+    else:
+        diffusorOption = int(method)
+
     if diffusorOption == 0:
         print("""
 What the abbv's mean:
