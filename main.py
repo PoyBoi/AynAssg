@@ -173,7 +173,8 @@ if args.l !='':
 
         loc = args.f.split("\\")[-1]
         i = Image.open(r"./results/restored_imgs/{}".format(loc))
-        i.show()
+        print("brk{}brk".format(loc))
+        # i.show()
     
     elif args.b == True:
         if os.path.isfile(args.f):
