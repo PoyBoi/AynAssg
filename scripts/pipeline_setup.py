@@ -323,7 +323,7 @@ def swapBG(
         # make_image_grid([init_image, mask_image, image], rows=1, cols=3)
 
         # print(image_1, "\n", image_1[0])
-        image_1[0].show()
+        # image_1[0].show()
         print("Seed: ", seed)
 
         # # Get the current date and time
@@ -335,9 +335,10 @@ def swapBG(
         # Use the timestamp in the filename
         filename = f"output_bg_{timestamp}.png"
         image_1[0].save("./outputs/" + filename)
+        print("brk{}brk".format(filename))
 
         # print(image_1[0])
-        return (image_1[0])
+        # return (image_1[0])
 
 #__main__
 def pipelineSetup(
