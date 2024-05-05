@@ -32,6 +32,8 @@ parser.add_argument('-lora', type=str, help="Location of lora to be applied, if 
 
 parser.add_argument('-maskloc', '--k', '-K', type=str, help="Location of mask to be applied, if any", default='')
 
+parser.add_argument('-method', '--z', '-z', type=int, help="Which sampler to be used", default=99)
+
 args = parser.parse_args()
 
 if os.name == 'nt':  # Windows
@@ -155,7 +157,8 @@ if args.l !='':
             seed = args.s, 
             batch_size = args.batch_size,
             size = args.size,
-            use_embeddings = True         
+            use_embeddings = True,
+            method= args.z        
             )
         
     elif args.r == True:
@@ -186,6 +189,7 @@ if args.l !='':
                 # scale = args.u
                 # clip_skip = args.clip_skip,
                 batch_size = args.batch_size,
+                method = args.z
                 # size = args.size  
             )
         else:
