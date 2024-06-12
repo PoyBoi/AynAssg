@@ -3,6 +3,9 @@ accelerate==0.21.0
 diffusers==0.20.0
 huggingface_hub==0.16.4
 omegaconf==2.3.0
+
+tensorflow==2.11.1
+tensorflow-io==0.31.0
 torch
 torchvision
 torchaudio
