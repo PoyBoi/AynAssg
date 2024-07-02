@@ -340,6 +340,18 @@ def swapBG(
         # print(image_1[0])
         # return (image_1[0])
 
+def add_lora_to_pipeline(pipeline):
+    # Assuming `lora` is a function or a pipeline step you want to add
+    # This is a placeholder for how you might add `lora` to your pipeline
+    # The actual implementation will depend on the structure of your pipeline and what `lora` is
+    lora_step = create_lora_step()  # This is a hypothetical function to create the lora step
+    pipeline.add_step(lora_step)  # This assumes your pipeline has an `add_step` method
+    return pipeline
+
+# Example usage
+# Assuming `pipeline` is your existing pipeline object
+pipeline = add_lora_to_pipeline(pipeline)
+
 #__main__
 def pipelineSetup(
     model_path:str,
